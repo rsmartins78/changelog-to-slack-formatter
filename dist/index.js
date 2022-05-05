@@ -8810,7 +8810,7 @@ async function run() {
         let prNumber = prNumberPattern.exec(line);
         line = line.replace(
           prNumber[0],
-          `<${fullRepoURL}/pulls/${prNumber[1]}|${prNumber[0]}>`
+          `<${fullRepoURL}/pull/${prNumber[1]}|${prNumber[0]}>`
         );
       }
 
