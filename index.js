@@ -1,0 +1,66 @@
+const core = require("@actions/core");
+const { context } = require("@actions/github");
+
+async function run() {
+  try {
+    // Fetching values from actions parameters
+    const changeLogInput = core.getInput("changeLogInput", { required: true });
+    const jiraTicketPattern = new RegExp(
+      core.getInput("jiraTicketPattern", { required: true })
+    );
+    const prNumberPattern = new RegExp(
+      core.getInput("prNumberPattern", { required: true })
+    );
+    const jiraTicketIgnorePattern = core.getInput("jiraTicketIgnorePattern", {
+      required: true,
+    });
+    const jiraURL = core.getInput("jiraURL", { required: true });
+    const githubServer = core.getInput("githubServer", { required: true });
+
+    // Removing ending slash
+    jiraURL.endsWith("/") ? (jiraURL = jiraURL.slice(0, -1)) : jiraURL;
+    githubServer.endsWith("/")
+      ? (githubServer = githubServer.slice(0, -1))
+      : githubServer;
+
+    const { owner: currentOwner, repo: currentRepo } = context.repo;
+    const fullRepoURL = `${githubServer}/${currentOwner}/${currentRepo}`;
+
+    // Transforming changelog input into an array
+    const changeLog = changeLogInput.split("\n");
+    let changeLogFormattedArr = [];
+    let changeLogFormatted;
+    changeLog.forEach((change) => {
+      let line = change;
+
+      // Getting the Jira Ticket and creating a slack formated hyperlink for it
+      if (jiraTicketPattern.test(line)) {
+        let jiraTicket = jiraTicketPattern.exec(line); // We consider Jira Task will be the commit message's prefix
+        if (!jiraTicket[0].includes(jiraTicketIgnorePattern)) {
+          line = line.replace(
+            jiraTicket,
+            `<${jiraURL}/browse/${jiraTicket[0]}|${jiraTicket[0]}>`
+          );
+        }
+      }
+
+      // Getting the PR number and creating a slack formated hyperlink for it
+      if (prNumberPattern.test(line)) {
+        let prNumber = prNumberPattern.exec(line);
+        line = line.replace(
+          prNumber[0],
+          `<${fullRepoURL}/pull/${prNumber[1]}|${prNumber[0]}>`
+        );
+      }
+
+      // Storing each new formatted line to an array
+      changeLogFormattedArr.push(line);
+    });
+    // Converting array to string
+    changeLogFormatted = changeLogFormattedArr.join("\n");
+    core.setOutput("formattedChangelog", changeLogFormatted);
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+}
+run();

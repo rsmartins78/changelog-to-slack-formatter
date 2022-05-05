@@ -1,0 +1,34 @@
+name: "Changelog to Slack Formatter"
+description: "Receive a `git log` log between two tags and format as a message to slack, with hyperlinks, to Jira and Github PRs"
+author: rsmartins78
+branding:  
+  icon: align-justify
+  color: white
+inputs:
+  changeLogInput:
+    description: Git log you want to format
+    required: true
+  jiraTicketPattern:
+    description: RegExp to find the Jira Ticket in the commit messages. E.g. 'PRJ-\w+''
+    required: true
+  jiraTicketIgnorePattern:
+    description: String to ignore certain Jira Tickets, e.g. PROJ-NONE or just NONE
+    required: false
+    default: 'NONE'
+  jiraURL:
+    description: Jira URL used to create the Task URL.
+    required: true
+  prNumberPattern:
+    description: Pattern to search for the PR Number in the commit message
+    required: false
+    default: '#(\w+)'
+  githubServer:
+    description: URL to Github server, default to https://github.com
+    required: false
+    default: https://github.com
+outputs:
+  formattedChangelog:
+    description: "Formatted message, ready to send to Slack"
+runs:
+  using: "node16"
+  main: "dist/index.js"
