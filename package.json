@@ -1,14 +1,14 @@
 {
   "name": "changelog-formatter",
-  "version": "1.0.0",
-  "description": "",
+  "version": "v1",
+  "description": "Receive a `git log` log between two tags and format as a message to slack, with hyperlinks, to Jira and Github PRs",
   "main": "index.js",
   "scripts": {
     "build": "npx ncc build index.js --license licenses.txt"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["github action", "slack formatter", "changelog", "git log"],
+  "author": "rsmartins78",
+  "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.7.0",
     "@actions/github": "^5.0.1"
