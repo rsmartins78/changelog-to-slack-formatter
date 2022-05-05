@@ -71,7 +71,7 @@ changelog:
       id: changelog
       if: steps.gitlog.outputs.log == 'true' ## optional
       with:
-        changeLogInput:
+        changeLogInput: ${{ env.GITLOG }}
         jiraTicketPattern: 'PROJ-\w+'
         jiraURL: "https://jira.company.com"
     - uses: rtCamp/action-slack-notify@v2.2.0
