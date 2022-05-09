@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Formatter 
     steps:
-    - uses: rsmartins78/changelog-to-slack-formatter@main
+    - uses: cerqlar/action-changelog-to-slack-fmt@main
       id: changelog
       with:
         changeLogInput: |
