@@ -67,7 +67,7 @@ changelog:
 
         if [[ ! -z $GITLOG ]]; then echo "::set-output name=log::true"; fi
         ## you can use this output to validate if the changelog was generated before following with the workflow
-    - uses: rsmartins78/changelog-to-slack-formatter@v1
+    - uses: cerqlar/action-changelog-to-slack-fmt@v1
       id: changelog
       if: steps.gitlog.outputs.log == 'true' ## optional
       with:
