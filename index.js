@@ -22,11 +22,9 @@ async function run() {
     // Transforming changelog input into an array
     const changeLog = changeLogInput.split("\n");
     let changeLogFormattedArr = [];
-    let changeLogFormatted;
 
     changeLog.forEach((change) => {
       let line = change;
-
       // Getting the Jira Ticket and creating a slack formated hyperlink for it
       [...line.matchAll(jiraTicketPattern)].forEach((jiraTicket) => {
         line = line.replace(
@@ -43,8 +41,10 @@ async function run() {
       changeLogFormattedArr.push(line);
     });
     // Converting array to string
-    changeLogFormatted = changeLogFormattedArr.join("\n");
+    let changeLogFormatted = changeLogFormattedArr.join("\n");
     core.setOutput("formattedChangelog", changeLogFormatted);
+    core.info("Result: ")
+    core.info(changeLogFormatted)
   } catch (error) {
     core.setFailed(error.message);
   }
