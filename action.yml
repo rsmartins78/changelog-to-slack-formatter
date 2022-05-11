@@ -14,10 +14,6 @@ inputs:
   jiraURL:
     description: Jira URL used to create the Task URL.
     required: true
-  prNumberPattern:
-    description: Pattern to search for the PR Number in the commit message
-    required: false
-    default: '/#(\d+)/gm'
   githubServer:
     description: URL to Github server, default to https://github.com
     required: false

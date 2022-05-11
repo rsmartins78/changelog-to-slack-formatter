@@ -5,15 +5,10 @@ async function run() {
   try {
     // Fetching values from actions parameters
     const changeLogInput = core.getInput("changeLogInput", { required: true });
-    const jiraTicketPattern = new RegExp(
-      core.getInput("jiraTicketPattern", { required: true })
-    );
-    const prNumberPattern = new RegExp(
-      core.getInput("prNumberPattern", { required: true })
-    );
-
+    const jiraTicketPattern = core.getInput("jiraTicketPattern", { required: true })
     const jiraURL = core.getInput("jiraURL", { required: true });
     const githubServer = core.getInput("githubServer", { required: true });
+    const prNumberPattern = /#(\d+)/gm
 
     // Removing ending slash
     jiraURL.endsWith("/") ? (jiraURL = jiraURL.slice(0, -1)) : jiraURL;
