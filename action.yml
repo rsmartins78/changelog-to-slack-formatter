@@ -9,19 +9,15 @@ inputs:
     description: Git log you want to format
     required: true
   jiraTicketPattern:
-    description: RegExp to find the Jira Ticket in the commit messages. E.g. 'PRJ-\w+''
+    description: RegExp to find the Jira Ticket in the commit messages. E.g. 'PROJ-\d+''
     required: true
-  jiraTicketIgnorePattern:
-    description: String to ignore certain Jira Tickets, e.g. PROJ-NONE or just NONE
-    required: false
-    default: 'NONE'
   jiraURL:
     description: Jira URL used to create the Task URL.
     required: true
   prNumberPattern:
     description: Pattern to search for the PR Number in the commit message
     required: false
-    default: '#(\w+)'
+    default: '/#(\d+)/gm'
   githubServer:
     description: URL to Github server, default to https://github.com
     required: false

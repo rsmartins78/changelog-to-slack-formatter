@@ -11,9 +11,7 @@ async function run() {
     const prNumberPattern = new RegExp(
       core.getInput("prNumberPattern", { required: true })
     );
-    const jiraTicketIgnorePattern = core.getInput("jiraTicketIgnorePattern", {
-      required: true,
-    });
+
     const jiraURL = core.getInput("jiraURL", { required: true });
     const githubServer = core.getInput("githubServer", { required: true });
 
@@ -30,28 +28,21 @@ async function run() {
     const changeLog = changeLogInput.split("\n");
     let changeLogFormattedArr = [];
     let changeLogFormatted;
+
     changeLog.forEach((change) => {
       let line = change;
 
       // Getting the Jira Ticket and creating a slack formated hyperlink for it
-      if (jiraTicketPattern.test(line)) {
-        let jiraTicket = jiraTicketPattern.exec(line); // We consider Jira Task will be the commit message's prefix
-        if (!jiraTicket[0].includes(jiraTicketIgnorePattern)) {
-          line = line.replace(
-            jiraTicket,
-            `<${jiraURL}/browse/${jiraTicket[0]}|${jiraTicket[0]}>`
-          );
-        }
-      }
-
-      // Getting the PR number and creating a slack formated hyperlink for it
-      if (prNumberPattern.test(line)) {
-        let prNumber = prNumberPattern.exec(line);
+      [...line.matchAll(jiraTicketPattern)].forEach((jiraTicket) => {
         line = line.replace(
-          prNumber[0],
-          `<${fullRepoURL}/pull/${prNumber[1]}|${prNumber[0]}>`
+          jiraTicket[0],
+          `<${jiraURL}/browse/${jiraTicket[0]}|${jiraTicket[0]}>`
         );
-      }
+      });
+
+      [...line.matchAll(prNumberPattern)].forEach((pr) => {
+        line = line.replace(pr[0], `<${fullRepoURL}/pull/${pr[1]}|${pr[0]}>`);
+      });
 
       // Storing each new formatted line to an array
       changeLogFormattedArr.push(line);

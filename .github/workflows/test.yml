@@ -16,14 +16,14 @@ jobs:
           PROJ-2684 Set info log level for Inventory Service. (#2151)
           PROJ-NONE add BadgeBase component (#2150)
           PROJ-NONE Extend FieldsControllerInput.tsx with AutoDropdown (#2134)
-          PROJ-2684 Fix stuck transaction polling jobs. (#2143)
+          PROJ-2684, PROJ-1231 Fix stuck transaction polling jobs. (#2143) (#2133)
           PROJ-NONE Updating Datadog Java Agent Version (#2148)
           PROJ-NONE Fixing environment validation on tf-deploy (#2147)
           PROJ-NONE Applying podAntiAffinity on envoy-linkerd
           PROJ-2178 add tooltip and fix dropdown bug (#2122)
           PROJ-2645 create trades review page (#2102)
           PROJ-2674 Sending changelog between versions to slack (#2144)
-        jiraTicketPattern: 'PROJ-\w+'
+        jiraTicketPattern: '/PROJ-\d+/gm'
         jiraURL: 'https://jira.company.com'
     - name: Slack Notify
       uses: rtCamp/action-slack-notify@v2.2.0
