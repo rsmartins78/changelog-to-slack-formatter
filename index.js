@@ -28,7 +28,7 @@ async function run() {
     changeLog.forEach((change) => {
       let line = change;
       // Getting the Jira Ticket and creating a slack formated hyperlink for it
-      [...line.matchAll(new RegExp(jiraTicketPattern))].forEach(
+      [...line.matchAll(new RegExp(jiraTicketPattern, "g"))].forEach(
         (jiraTicket) => {
           line = line.replace(
             jiraTicket[0],
