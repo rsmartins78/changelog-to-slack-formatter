@@ -9,7 +9,7 @@ inputs:
     description: Git log you want to format
     required: true
   jiraTicketPattern:
-    description: RegExp to find the Jira Ticket in the commit messages. E.g. 'PROJ-\d+''
+    description: RegExp to find the Jira Ticket in the commit messages. E.g. 'PROJ-\d+'
     required: true
   jiraURL:
     description: Jira URL used to create the Task URL.

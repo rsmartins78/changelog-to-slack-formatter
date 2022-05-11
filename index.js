@@ -10,7 +10,7 @@ async function run() {
     });
     const jiraURL = core.getInput("jiraURL", { required: true });
     const githubServer = core.getInput("githubServer", { required: true });
-    const prNumberPattern = /#(\d+)/gm;
+    const prNumberPattern = "#(\\d+)";
 
     // Removing ending slash
     jiraURL.endsWith("/") ? (jiraURL = jiraURL.slice(0, -1)) : jiraURL;
@@ -37,7 +37,7 @@ async function run() {
         }
       );
 
-      [...line.matchAll(prNumberPattern)].forEach((pr) => {
+      [...line.matchAll(new RegExp(prNumberPattern, "g"))].forEach((pr) => {
         line = line.replace(pr[0], `<${fullRepoURL}/pull/${pr[1]}|${pr[0]}>`);
       });
 
