@@ -1,5 +1,5 @@
-This action prints receive an unformatted changelog multiline string text and create hyperlinks to Jira Tickets and Github PRs. It's recomended if your team squash commits from feature branches to main, and the commit message contains a Jira Task ID, like `PROJ-1923`.  
-This action doens't send the message to Slack channel, neither generate the log between two tags, just format the message, creating the hyperlinks.
+This action receives an unformatted multiline text and create hyperlinks, finding Jira Tickets and Github PRs using RegExp. The created hyperlinks are following Slack's format. It's recomended if your team squash commits from feature branches to main, and the commit message contains a Jira Task ID, like `PROJ-1923`.  
+This action doens't send the message to Slack channel, neither generate the log between two tags, just format the message, creating the hyperlinks following the Slack's pattern.
 
 ## Inputs
 
