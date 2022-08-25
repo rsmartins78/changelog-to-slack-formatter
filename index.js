@@ -97,16 +97,15 @@ async function run() {
 
     const sendMessage = await slack.chat.postMessage({
       text: "A new tag was released/deployed...",
-      blocks: slackMessage,
+      blocks: JSON.stringify(slackMessage),
       channel: slackChannel,
     });
     core.setOutput("formattedChangelog", changeLogFormatted);
-    core.info("Result: ");
-    core.info(changeLogFormatted);
+    core.info(`Message JSON: \n${JSON.stringify(slackMessage)}`);
     core.info(`Successfully send message ${sendMessage.ts}`);
   } catch (error) {
     core.error(sendMessage);
-    core.error(slackMessage);
+    core.error(`Message JSON: \n${JSON.stringify(slackMessage)}`);
     core.setFailed(error.message);
   }
 }
