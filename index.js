@@ -4,9 +4,10 @@ const { WebClient } = require("@slack/web-api");
 
 async function run() {
   try {
+    // Fetch action env vars
     const workflowName = process.env.GITHUB_WORKFLOW;
     const githubSHA = process.env.GITHUB_SHA;
-    // Fetching values from actions parameters
+    // Fetching action inputs
     const changeLogInput = core.getInput("changeLogInput", { required: true });
     const jiraTicketPattern = core.getInput("jiraTicketPattern", {
       required: true,
