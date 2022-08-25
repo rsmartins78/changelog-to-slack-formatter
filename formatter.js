@@ -1,3 +1,5 @@
+const core = require("@actions/core");
+
 const format = async function ({
   changeLogInput,
   jiraTicketPattern,
@@ -8,7 +10,6 @@ const format = async function ({
   // Transforming changelog input into an array
   const changeLog = changeLogInput.split("\n");
   let changeLogFormattedArr = [];
-
   changeLog.forEach((change) => {
     let line = change;
     // Getting the Jira Ticket and creating a slack formated hyperlink for it
@@ -30,5 +31,8 @@ const format = async function ({
   });
   // Converting array to string
   let changeLogFormatted = changeLogFormattedArr.join("\n");
-  return changeLogFormatted, changeLogFormattedArr;
+  core.debug(changeLogFormatted);
+  return { changeLogFormatted, changeLogFormattedArr };
 };
+
+module.exports = format;

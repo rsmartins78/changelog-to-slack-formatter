@@ -12,8 +12,6 @@ jobs:
       id: changelog
       with:
         changeLogInput: |
-          *Old version: `1.1.0`*
-          *New version: `1.3.2`*
           PROJ-2684 Set info log level for Inventory Service. (#2151)
           PROJ-NONE add BadgeBase component (#2150)
           PROJ-NONE Extend FieldsControllerInput.tsx with AutoDropdown (#2134)
@@ -28,3 +26,5 @@ jobs:
         jiraURL: 'https://jira.company.com'
         slackBotToken: ${{ secrets.SLACK_BOT_TOKEN }}
         slackChannel: ${{ secrets.SLACK_CHANNEL }}
+        oldVersion: "1.1.0"
+        newVersion: "1.3.2"

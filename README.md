@@ -19,6 +19,14 @@ Jira URL used to create the Task URL. E.g. `https://jira.company.com`.
 
 URL of the Github server, defaults to https://github.com
 
+### `oldVersion`
+
+If set, will be used on the slack message (requires slackBotToken and slackChannel)
+
+### `newVersion`
+
+If set, will be used on the slack message (requires slackBotToken and slackChannel)
+
 ### `slackBotToken`
 
 Slack Bot Token, required to send messages using WebClient, read more in https://api.slack.com/authentication/token-types#bot
@@ -45,19 +53,22 @@ changelog:
   steps:
     - id: gitlog
       env:
-        old_version: '1.0.0'
-        new_version: '1.2.0'
+        old_version: "1.0.0"
+        new_version: "1.2.0"
       run:
         ## Workarround to generate a multiline shell variable in Github Actions
         GITLOG=$(git log ${{ env.old_version }}..${{ env.new_version }} --oneline | cut -f 2- -d ' ')
         echo "GITLOG<<EOF" >> $GITHUB_ENV
-        echo "*Old Version: \`${{ env.old_version }}\`*" >> $GITHUB_ENV
-        echo "*New version: \`${{ env.new_version }}\`*" >> $GITHUB_ENV
         echo "*Changes:*" >> $GITHUB_ENV
         echo "$GITLOG" >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
+        if [[ ! -z $GITLOG ]]; then echo "::set-output name=log::true"; fi
+        ## you can use this output to validate if the changelog was generated before following with the workflow
 
-        ## Example of expected output from these commands ##
+        ##########################################################
+        ##### Example of expected output from these commands #####
+        ##########################################################
+
         # PROJ-2684 Set info log level for Inventory Service. (#2151)
         # PROJ-NONE add BadgeBase component (#2150)
         # PROJ-NONE Extend FieldsControllerInput.tsx with AutoDropdown (#2134)
@@ -70,8 +81,6 @@ changelog:
         # PROJ-2645 create trades review page (#2102)
         # PROJ-2674 Sending changelog between versions to slack (#2144)
 
-        if [[ ! -z $GITLOG ]]; then echo "::set-output name=log::true"; fi
-        ## you can use this output to validate if the changelog was generated before following with the workflow
     - uses: rsmartins78/changelog-to-slack-formatter@v2
       id: changelog
       if: steps.gitlog.outputs.log == 'true' ## optional
@@ -81,4 +90,6 @@ changelog:
         jiraURL: "https://jira.company.com"
         slackBotToken: ${{ secrets.SLACK_BOT_TOKEN }}
         slackChannel: ${{ secrets.SLACK_CHANNEL }}
+        oldVersion: "1.0.0"
+        newVersion: "1.2.0"
 ```

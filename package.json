@@ -4,7 +4,8 @@
   "description": "Receive a `git log` log between two tags and format as a message to slack, with hyperlinks, to Jira and Github PRs",
   "main": "index.js",
   "scripts": {
-    "build": "npx ncc build index.js --license licenses.txt -m"
+    "build": "npx ncc build index.js --license licenses.txt -m",
+    "debug": "npx ncc build index.debug.js --license licenses.txt -m && node dist/index.js"
   },
   "keywords": [
     "github action",
@@ -15,7 +16,7 @@
   "author": "rsmartins78",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.9.0",
+    "@actions/core": "^1.9.1",
     "@actions/github": "^5.0.1",
     "@slack/web-api": "^6.7.2"
   },

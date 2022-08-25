@@ -1,11 +1,21 @@
+const core = require("@actions/core");
 const { WebClient } = require("@slack/web-api");
 
-export const send = async function ({
+Object.defineProperty(String.prototype, "capitalize", {
+  value: function () {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+  },
+  enumerable: false,
+});
+
+const send = async function ({
   messageArr,
   channel,
   token,
   actionLink,
   workflowName,
+  oldVersion = undefined,
+  newVersion = undefined,
 }) {
   const slack = new WebClient(token);
   const blocks = [
@@ -13,11 +23,18 @@ export const send = async function ({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `A new tag was released/deployed | <${actionLink}|${workflowName}>`,
+        text: `:tada::tada: *<${actionLink}|${workflowName.capitalize()}>* | A new tag was released/deployed :tada::tada:`,
       },
     },
     {
       type: "divider",
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `*Changelog*`,
+      },
     },
   ];
 
@@ -27,6 +44,18 @@ export const send = async function ({
     */
   let count = 0;
   let tempText;
+
+  if (oldVersion !== undefined && newVersion !== undefined) {
+    let versions = {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: `Old Version: \`${oldVersion}\`\nNew Version: \`${newVersion}\``,
+      },
+    };
+    blocks.push(versions);
+  }
+
   await messageArr.forEach((change) => {
     if (count < 7) {
       if (tempText === undefined) {
@@ -37,7 +66,7 @@ export const send = async function ({
       count++;
     } else if (count == 7) {
       tempText = tempText + "\n" + change;
-      tempTextObj = {
+      let tempTextObj = {
         type: "section",
         text: { type: "mrkdwn", text: tempText },
       };
@@ -50,12 +79,15 @@ export const send = async function ({
     }
   });
   /* End of workaround */
+
   const sendMessage = await slack.chat.postMessage({
     text: "A new tag was released/deployed...",
-    blocks: JSON.stringify(blocks),
-    channel: slackChannel,
+    blocks: blocks,
+    channel: channel,
   });
-
-  core.info(`Successfully send message ${sendMessage.ts} to ${channel}`);
+  core.debug(sendMessage);
+  core.info(`Successfully send message to ${channel}`);
   return sendMessage;
 };
+
+module.exports = send;
