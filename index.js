@@ -57,7 +57,7 @@ async function run() {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `A new tag was released/deployed to <${fullRepoURL}/commits/${githubSHA}/checks|${workflowName}>`,
+          text: `A new tag was released/deployed | <${fullRepoURL}/commit/${githubSHA}/checks|${workflowName}>`,
         },
       },
       {
