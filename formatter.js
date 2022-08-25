@@ -1,3 +1,5 @@
+const core = require("@actions/core");
+
 const format = async function ({
   changeLogInput,
   jiraTicketPattern,
@@ -29,6 +31,7 @@ const format = async function ({
   });
   // Converting array to string
   let changeLogFormatted = changeLogFormattedArr.join("\n");
+  core.debug(changeLogFormatted);
   return { changeLogFormatted, changeLogFormattedArr };
 };
 

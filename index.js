@@ -1,8 +1,8 @@
 const core = require("@actions/core");
 const { context } = require("@actions/github");
 
-const { send } = require("./slackmessage");
-const { format } = require("./formatter");
+const send = require("./slackmessage.js");
+const format = require("./formatter.js");
 
 async function run() {
   try {
@@ -39,7 +39,6 @@ async function run() {
       jiraTicketPattern: jiraTicketPattern,
       prNumberPattern: prNumberPattern,
     });
-
     if (slackBotToken !== "none" && slackChannel !== "none") {
       await send({
         messageArr: changeLogFormattedArr,
@@ -51,9 +50,7 @@ async function run() {
         newVersion: newVersion,
       });
     }
-
-    core.info("Message:");
-    core.info(changeLogFormatted);
+    core.info("Finish");
     core.setOutput("formattedChangelog", changeLogFormatted);
   } catch (error) {
     core.setFailed(error.message);

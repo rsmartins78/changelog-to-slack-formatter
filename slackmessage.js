@@ -85,7 +85,7 @@ const send = async function ({
     blocks: blocks,
     channel: channel,
   });
-
+  core.debug(sendMessage);
   core.info(`Successfully send message to ${channel}`);
   return sendMessage;
 };
