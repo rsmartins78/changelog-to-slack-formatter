@@ -8,16 +8,14 @@ export const send = async function ({
   workflowName,
 }) {
   const slack = new WebClient(token);
-  const blocks = [
+  const attachments = [(blocks = [])];
+  const header_blocks = [
     {
       type: "section",
       text: {
         type: "mrkdwn",
         text: `A new tag was released/deployed | <${actionLink}|${workflowName}>`,
       },
-    },
-    {
-      type: "divider",
     },
   ];
 
@@ -28,31 +26,38 @@ export const send = async function ({
   let count = 0;
   let tempText;
   await messageArr.forEach((change) => {
-    if (count < 7) {
-      if (tempText === undefined) {
-        tempText = change;
-      } else {
-        tempText = tempText + "\n" + change;
-      }
-      count++;
-    } else if (count == 7) {
-      tempText = tempText + "\n" + change;
-      tempTextObj = {
-        type: "section",
-        text: { type: "mrkdwn", text: tempText },
-      };
-      blocks.push(tempTextObj);
-      tempText = "";
-      count = 0;
-    } else {
-      tempText = "";
-      count = 0;
-    }
+    // if (count < 7) {
+    //   if (tempText === undefined) {
+    //     tempText = change;
+    //   } else {
+    //     tempText = tempText + "\n" + change;
+    //   }
+    //   count++;
+    // } else if (count == 7) {
+    tempText = tempText + "\n" + change;
+    // tempTextObj = {
+    //   type: "section",
+    //   text: { type: "mrkdwn", text: tempText },
+    // };
+    // blocks.push(tempTextObj);
+    // tempText = "";
+    // count = 0;
+    // } else {
+    //   tempText = "";
+    //   count = 0;
+    // }
   });
+  tempTextObj = {
+    type: "section",
+    text: { type: "mrkdwn", text: tempText },
+  };
+  attachments.blocks.push(tempTextObj);
+
   /* End of workaround */
   const sendMessage = await slack.chat.postMessage({
     text: "A new tag was released/deployed...",
-    blocks: JSON.stringify(blocks),
+    blocks: header_blocks,
+    attachments: attachments,
     channel: slackChannel,
   });
 
