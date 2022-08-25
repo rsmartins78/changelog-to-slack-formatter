@@ -4,7 +4,8 @@
   "description": "Receive a `git log` log between two tags and format as a message to slack, with hyperlinks, to Jira and Github PRs",
   "main": "index.js",
   "scripts": {
-    "build": "npx ncc build index.js --license licenses.txt -m"
+    "build": "npx ncc build index.js --license licenses.txt -m",
+    "debug": "npx ncc build index.debug.js --license licenses.txt -m && node dist/index.js"
   },
   "keywords": [
     "github action",

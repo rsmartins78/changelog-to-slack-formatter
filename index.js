@@ -1,8 +1,8 @@
 const core = require("@actions/core");
 const { context } = require("@actions/github");
 
-const send = require("./slackmessage");
-const format = require("./formatter");
+const { send } = require("./slackmessage");
+const { format } = require("./formatter");
 
 async function run() {
   try {
