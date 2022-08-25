@@ -8,7 +8,7 @@ export const send = async function ({
   workflowName,
 }) {
   const slack = new WebClient(token);
-  const attachments = [(blocks = [])];
+  const attachments = [{ blocks: [] }];
   const header_blocks = [
     {
       type: "section",

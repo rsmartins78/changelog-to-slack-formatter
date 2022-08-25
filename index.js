@@ -48,7 +48,8 @@ async function run() {
       });
     }
 
-    core.info(`Message: \n${changeLogFormatted}`);
+    core.info("Message:");
+    core.info(changeLogFormatted);
     core.setOutput("formattedChangelog", changeLogFormatted);
   } catch (error) {
     core.setFailed(error.message);
