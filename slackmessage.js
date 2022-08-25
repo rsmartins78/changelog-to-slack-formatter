@@ -23,8 +23,8 @@ export const send = async function ({
       Terrible workaround to deal with Slack API limitations 
       Every 10 lines per message block, to avoind 3k characters limitation
     */
-  let count = 0;
-  let tempText;
+  //   let count = 0;
+  //   let tempText;
   await messageArr.forEach((change) => {
     // if (count < 7) {
     //   if (tempText === undefined) {
@@ -61,6 +61,6 @@ export const send = async function ({
     channel: slackChannel,
   });
 
-  core.info(`Successfully send message ${sendMessage.ts} to ${channel}`);
+  core.info(`Successfully send message to ${channel}`);
   return sendMessage;
 };
