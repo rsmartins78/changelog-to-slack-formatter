@@ -71,7 +71,7 @@ async function run() {
     */
     let count = 0;
     let tempText;
-    changeLogFormattedArr.forEach((change) => {
+    await changeLogFormattedArr.forEach((change) => {
       if (count < 7) {
         if (tempText === undefined) {
           tempText = change;
