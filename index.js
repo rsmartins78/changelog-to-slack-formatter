@@ -72,10 +72,14 @@ async function run() {
     let count = 0;
     let tempText;
     changeLogFormattedArr.forEach((change) => {
-      if (count < 10) {
-        tempText = tempText + "\n" + change;
+      if (count < 7) {
+        if (tempText === undefined) {
+          tempText = change;
+        } else {
+          tempText = tempText + "\n" + change;
+        }
         count++;
-      } else if (count == 10) {
+      } else if (count == 7) {
         tempText = tempText + "\n" + change;
         tempTextObj = {
           type: "section",
