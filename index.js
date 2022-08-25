@@ -48,11 +48,9 @@ async function run() {
       });
     }
 
+    core.info(`Message: \n${changeLogFormatted}`);
     core.setOutput("formattedChangelog", changeLogFormatted);
-    core.info(`Message JSON: \n${JSON.stringify(changeLogFormatted)}`);
   } catch (error) {
-    core.error(sendMessage);
-    core.error(`Message JSON: \n${JSON.stringify(slackMessage)}`);
     core.setFailed(error.message);
   }
 }
