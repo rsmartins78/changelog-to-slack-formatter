@@ -62,7 +62,7 @@ async function run() {
       ],
     };
     const sendMessage = await slack.chat.postMessage({
-      text: slackMessage,
+      blocks: slackMessage,
       channel: slackChannel,
     });
     core.setOutput("formattedChangelog", changeLogFormatted);
