@@ -1,8 +1,8 @@
-import core from "@actions/core";
-import { context } from "@actions/github";
+const core = require("@actions/core");
+const { context } = require("@actions/github");
 
-import send from "./slackmessage";
-import format from "./formatter";
+const send = require("./slackmessage");
+const format = require("./formatter");
 
 async function run() {
   try {

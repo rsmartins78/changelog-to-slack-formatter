@@ -1,4 +1,4 @@
-export const format = async function ({
+const format = async function ({
   changeLogInput,
   jiraTicketPattern,
   prNumberPattern,
@@ -31,3 +31,5 @@ export const format = async function ({
   let changeLogFormatted = changeLogFormattedArr.join("\n");
   return { changeLogFormatted, changeLogFormattedArr };
 };
+
+module.exports = format;

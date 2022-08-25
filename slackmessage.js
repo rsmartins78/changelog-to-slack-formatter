@@ -1,5 +1,5 @@
-import core from "@actions/core";
-import { WebClient } from "@slack/web-api";
+const core = require("@actions/core");
+const { WebClient } = require("@slack/web-api");
 
 Object.defineProperty(String.prototype, "capitalize", {
   value: function () {
@@ -8,7 +8,7 @@ Object.defineProperty(String.prototype, "capitalize", {
   enumerable: false,
 });
 
-export const send = async function ({
+const send = async function ({
   messageArr,
   channel,
   token,
@@ -89,3 +89,5 @@ export const send = async function ({
   core.info(`Successfully send message to ${channel}`);
   return sendMessage;
 };
+
+module.exports = send;
