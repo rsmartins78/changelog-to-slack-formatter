@@ -14,8 +14,9 @@ const send = async function ({
   token,
   actionLink,
   workflowName,
-  oldVersion = undefined,
-  newVersion = undefined,
+  oldVersion,
+  newVersion,
+  customSubTitle,
 }) {
   const slack = new WebClient(token);
   const blocks = [
@@ -45,7 +46,18 @@ const send = async function ({
   let count = 0;
   let tempText;
 
-  if (oldVersion !== undefined && newVersion !== undefined) {
+  if (customSubTitle !== "none") {
+    let subTitle = {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: customSubTitle,
+      },
+    };
+    blocks.push(subTitle);
+  }
+
+  if (oldVersion !== "none" && newVersion !== "none") {
     let versions = {
       type: "section",
       text: {

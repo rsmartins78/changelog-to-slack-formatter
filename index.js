@@ -21,6 +21,7 @@ async function run() {
     const slackChannel = core.getInput("slackChannel", { required: false });
     const oldVersion = core.getInput("oldVersion", { required: false });
     const newVersion = core.getInput("newVersion", { required: false });
+    const customSubTitle = core.getInput("customSubTitle", { required: false });
 
     // Removing ending slash
     jiraURL.endsWith("/") ? (jiraURL = jiraURL.slice(0, -1)) : jiraURL;
@@ -48,6 +49,7 @@ async function run() {
         workflowName: workflowName,
         oldVersion: oldVersion,
         newVersion: newVersion,
+        customSubTitle: customSubTitle,
       });
     }
     core.info("Finish");

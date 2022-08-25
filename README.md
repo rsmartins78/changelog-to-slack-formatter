@@ -19,14 +19,6 @@ Jira URL used to create the Task URL. E.g. `https://jira.company.com`.
 
 URL of the Github server, defaults to https://github.com
 
-### `oldVersion`
-
-If set, will be used on the slack message (requires slackBotToken and slackChannel)
-
-### `newVersion`
-
-If set, will be used on the slack message (requires slackBotToken and slackChannel)
-
 ### `slackBotToken`
 
 Slack Bot Token, required to send messages using WebClient, read more in https://api.slack.com/authentication/token-types#bot
@@ -36,6 +28,18 @@ Slack Bot Token, required to send messages using WebClient, read more in https:/
 Slack Channel to send a message, it can be a channel like '#channel-name' or a user like '@username'
 
 > If both slack inputs are not defined, this action won't fail, the formatted message will be created and exposed on `formattedChangelog` output
+
+### `oldVersion`
+
+If set, will be used on the slack message to show the old version running on the environment. (Requires `slackBotToken` and `slackChannel`)
+
+### `newVersion`
+
+If set, will be used on the slack message to show the old version running on the environment. (Requires `slackBotToken` and `slackChannel`)
+
+### `customSubTitles`
+
+If set, it will send in the message a subtitle. (Requires `slackBotToken` and `slackChannel`)
 
 ## Outputs
 
@@ -92,4 +96,5 @@ changelog:
         slackChannel: ${{ secrets.SLACK_CHANNEL }}
         oldVersion: "1.0.0"
         newVersion: "1.2.0"
+        customSubTitle: "Backend Changes"
 ```

@@ -21,15 +21,21 @@ inputs:
   oldVersion:
     description: Old tag version running on the environment
     required: false
+    default: "none"
   newVersion:
     description: New tag version running on the environment
     required: false
+    default: "none"
   slackBotToken:
     description: Slack Bot Token, required to send messages using WebClient, read more in https://api.slack.com/authentication/token-types#bot
     required: false
     default: "none"
   slackChannel:
     description: Slack Channel to send a message, it can be a channel like '#channel-name' or a user like '@username'
+    required: false
+    default: "none"
+  customSubTitle:
+    description: Custom subtitle for the message, can be used say for example the environment that is receiving this update.
     required: false
     default: "none"
 outputs:
