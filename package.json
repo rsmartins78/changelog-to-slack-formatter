@@ -6,12 +6,18 @@
   "scripts": {
     "build": "npx ncc build index.js --license licenses.txt -m"
   },
-  "keywords": ["github action", "slack formatter", "changelog", "git log"],
+  "keywords": [
+    "github action",
+    "slack formatter",
+    "changelog",
+    "git log"
+  ],
   "author": "rsmartins78",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.7.0",
-    "@actions/github": "^5.0.1"
+    "@actions/core": "^1.9.0",
+    "@actions/github": "^5.0.1",
+    "@slack/web-api": "^6.7.2"
   },
   "devDependencies": {
     "prettier": "2.6.2"

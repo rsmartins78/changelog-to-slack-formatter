@@ -1,5 +1,5 @@
 This action receives an unformatted multiline text and create hyperlinks, finding Jira Tickets and Github PRs using RegExp. The created hyperlinks are following Slack's format. It's recomended if your team squash commits from feature branches to main, and the commit message contains a Jira Task ID, like `PROJ-1923`.  
-This action doens't send the message to Slack channel, neither generate the log between two tags, just format the message, creating the hyperlinks following the Slack's pattern.
+This action doesn't generate the log between two tags, just format the message (and optionally send the message), creating the hyperlinks following the Slack's pattern.
 
 ## Inputs
 
@@ -19,18 +19,29 @@ Jira URL used to create the Task URL. E.g. `https://jira.company.com`.
 
 URL of the Github server, defaults to https://github.com
 
+### `slackBotToken`
+
+Slack Bot Token, required to send messages using WebClient, read more in https://api.slack.com/authentication/token-types#bot
+
+### `slackChannel`
+
+Slack Channel to send a message, it can be a channel like '#channel-name' or a user like '@username'
+
+> If both slack inputs are not defined, this action won't fail, the formatted message will be created and exposed on `formattedChangelog` output
+
 ## Outputs
 
 ### `formattedChangelog`
 
-Formatted message, ready to send to Slack.
+Formatted message, ready to send to Slack, if you prefer to send the message using another method.  
+It keeps the compability with the previous version.
 
 ## Example usage
 
 ```yaml
 changelog:
   runs-on: ubuntu-20.04
-  name: Formatter
+  name: Sending Changelog To Slack
   steps:
     - id: gitlog
       env:
@@ -61,16 +72,13 @@ changelog:
 
         if [[ ! -z $GITLOG ]]; then echo "::set-output name=log::true"; fi
         ## you can use this output to validate if the changelog was generated before following with the workflow
-    - uses: rsmartins78/changelog-to-slack-formatter@v1
+    - uses: rsmartins78/changelog-to-slack-formatter@v2
       id: changelog
       if: steps.gitlog.outputs.log == 'true' ## optional
       with:
         changeLogInput: ${{ env.GITLOG }}
         jiraTicketPattern: 'PROJ-\d+'
         jiraURL: "https://jira.company.com"
-    - uses: rtCamp/action-slack-notify@v2.2.0
-      if: steps.gitlog.outputs.log == 'true' ## optional
-      env:
-        SLACK_MESSAGE: ${{ steps.changelog.outputs.formattedChangelog }}
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        slackBotToken: ${{ secrets.SLACK_BOT_TOKEN }}
+        slackChannel: ${{ secrets.SLACK_CHANNEL }}
 ```

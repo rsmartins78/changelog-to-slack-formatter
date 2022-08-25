@@ -12,7 +12,8 @@ jobs:
       id: changelog
       with:
         changeLogInput: |
-          *New version: `1.2.0`*
+          *Old version: `1.1.0`*
+          *New version: `1.3.2`*
           PROJ-2684 Set info log level for Inventory Service. (#2151)
           PROJ-NONE add BadgeBase component (#2150)
           PROJ-NONE Extend FieldsControllerInput.tsx with AutoDropdown (#2134)
@@ -25,8 +26,5 @@ jobs:
           PROJ-2674 Sending changelog between versions to slack (#2144)
         jiraTicketPattern: 'PROJ-\d+'
         jiraURL: 'https://jira.company.com'
-    - name: Slack Notify
-      uses: rtCamp/action-slack-notify@v2.2.0
-      env:
-        SLACK_MESSAGE: ${{ steps.changelog.outputs.formattedChangelog }}
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        slackBotToken: ${{ secrets.SLACK_BOT_TOKEN }}
+        slackChannel: ${{ secrets.SLACK_CHANNEL }}

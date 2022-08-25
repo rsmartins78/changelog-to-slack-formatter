@@ -1,9 +1,15 @@
 const core = require("@actions/core");
 const { context } = require("@actions/github");
 
+const send = require("./slackmessage");
+const format = require("./formatter");
+
 async function run() {
   try {
-    // Fetching values from actions parameters
+    // Fetch action env vars
+    const workflowName = process.env.GITHUB_WORKFLOW;
+    const githubSHA = process.env.GITHUB_SHA;
+    // Fetching action inputs
     const changeLogInput = core.getInput("changeLogInput", { required: true });
     const jiraTicketPattern = core.getInput("jiraTicketPattern", {
       required: true,
@@ -11,6 +17,8 @@ async function run() {
     const jiraURL = core.getInput("jiraURL", { required: true });
     const githubServer = core.getInput("githubServer", { required: true });
     const prNumberPattern = "#(\\d+)";
+    const slackBotToken = core.getInput("slackBotToken", { required: false });
+    const slackChannel = core.getInput("slackChannel", { required: false });
 
     // Removing ending slash
     jiraURL.endsWith("/") ? (jiraURL = jiraURL.slice(0, -1)) : jiraURL;
@@ -20,36 +28,31 @@ async function run() {
 
     const { owner: currentOwner, repo: currentRepo } = context.repo;
     const fullRepoURL = `${githubServer}/${currentOwner}/${currentRepo}`;
+    const actionLink = `${fullRepoURL}/commit/${githubSHA}/checks`;
 
-    // Transforming changelog input into an array
-    const changeLog = changeLogInput.split("\n");
-    let changeLogFormattedArr = [];
-
-    changeLog.forEach((change) => {
-      let line = change;
-      // Getting the Jira Ticket and creating a slack formated hyperlink for it
-      [...line.matchAll(new RegExp(jiraTicketPattern, "g"))].forEach(
-        (jiraTicket) => {
-          line = line.replace(
-            jiraTicket[0],
-            `<${jiraURL}/browse/${jiraTicket[0]}|${jiraTicket[0]}>`
-          );
-        }
-      );
-
-      [...line.matchAll(new RegExp(prNumberPattern, "g"))].forEach((pr) => {
-        line = line.replace(pr[0], `<${fullRepoURL}/pull/${pr[1]}|${pr[0]}>`);
-      });
-
-      // Storing each new formatted line to an array
-      changeLogFormattedArr.push(line);
+    const { changeLogFormatted, changeLogFormattedArr } = await format({
+      changeLogInput: changeLogInput,
+      fullRepoURL: fullRepoURL,
+      jiraURL: jiraURL,
+      jiraTicketPattern: jiraTicketPattern,
+      prNumberPattern: prNumberPattern,
     });
-    // Converting array to string
-    let changeLogFormatted = changeLogFormattedArr.join("\n");
+
+    if (slackBotToken !== "none" && slackChannel !== "none") {
+      await send({
+        messageArr: changeLogFormattedArr,
+        channel: slackChannel,
+        token: slackBotToken,
+        actionLink: actionLink,
+        workflowName: workflowName,
+      });
+    }
+
     core.setOutput("formattedChangelog", changeLogFormatted);
-    core.info("Result: ");
-    core.info(changeLogFormatted);
+    core.info(`Message JSON: \n${JSON.stringify(changeLogFormatted)}`);
   } catch (error) {
+    core.error(sendMessage);
+    core.error(`Message JSON: \n${JSON.stringify(slackMessage)}`);
     core.setFailed(error.message);
   }
 }
