@@ -4,6 +4,8 @@ const { WebClient } = require("@slack/web-api");
 
 async function run() {
   try {
+    const workflowName = process.env.GITHUB_WORKFLOW;
+    const githubSHA = process.env.GITHUB_SHA;
     // Fetching values from actions parameters
     const changeLogInput = core.getInput("changeLogInput", { required: true });
     const jiraTicketPattern = core.getInput("jiraTicketPattern", {
@@ -50,19 +52,27 @@ async function run() {
     // Converting array to string
     let changeLogFormatted = changeLogFormattedArr.join("\n");
     const slack = new WebClient(slackBotToken);
-    const slackMessage = {
-      blocks: [
-        {
-          type: "section",
-          text: {
-            type: "mrkdwn",
-            text: changeLogFormatted,
-          },
+    const slackMessage = [
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `A new tag was released/deployed to <${fullRepoURL}/commits/${githubSHA}/checks|${workflowName}>`,
         },
-      ],
-    };
+      },
+      {
+        type: "divider",
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: changeLogFormatted,
+        },
+      },
+    ];
     const sendMessage = await slack.chat.postMessage({
-      text: "A tag was released/deployed",
+      text: "A new tag was released/deployed...",
       blocks: slackMessage,
       channel: slackChannel,
     });
@@ -71,6 +81,8 @@ async function run() {
     core.info(changeLogFormatted);
     core.info(`Successfully send message ${sendMessage.ts}`);
   } catch (error) {
+    core.error(sendMessage);
+    core.error(slackMessage);
     core.setFailed(error.message);
   }
 }
