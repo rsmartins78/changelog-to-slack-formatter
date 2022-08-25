@@ -1,5 +1,6 @@
 const core = require("@actions/core");
 const { context } = require("@actions/github");
+const { WebClient } = require("@slack/web-api");
 
 async function run() {
   try {
@@ -11,6 +12,8 @@ async function run() {
     const jiraURL = core.getInput("jiraURL", { required: true });
     const githubServer = core.getInput("githubServer", { required: true });
     const prNumberPattern = "#(\\d+)";
+    const slackBotToken = core.getInput("slackBotToken", { required: true });
+    const slackChannel = core.getInput("slackChannel", { required: true });
 
     // Removing ending slash
     jiraURL.endsWith("/") ? (jiraURL = jiraURL.slice(0, -1)) : jiraURL;
@@ -46,9 +49,26 @@ async function run() {
     });
     // Converting array to string
     let changeLogFormatted = changeLogFormattedArr.join("\n");
+    const slack = new WebClient(slackBotToken);
+    const slackMessage = {
+      blocks: [
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: changeLogFormatted,
+          },
+        },
+      ],
+    };
+    const sendMessage = await slack.chat.postMessage({
+      text: slackMessage,
+      channel: slackChannel,
+    });
     core.setOutput("formattedChangelog", changeLogFormatted);
     core.info("Result: ");
     core.info(changeLogFormatted);
+    core.info(`Successfully send message ${sendMessage.ts}`);
   } catch (error) {
     core.setFailed(error.message);
   }

@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Formatter 
     steps:
-    - uses: rsmartins78/changelog-to-slack-formatter@main
+    - uses: rsmartins78/changelog-to-slack-formatter@integrating-with-slack
       id: changelog
       with:
         changeLogInput: |
@@ -25,8 +25,5 @@ jobs:
           PROJ-2674 Sending changelog between versions to slack (#2144)
         jiraTicketPattern: 'PROJ-\d+'
         jiraURL: 'https://jira.company.com'
-    - name: Slack Notify
-      uses: rtCamp/action-slack-notify@v2.2.0
-      env:
-        SLACK_MESSAGE: ${{ steps.changelog.outputs.formattedChangelog }}
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        slackBotToken: ${{ secrets.SLACK_BOT_TOKEN }}
+        slackChannel: ${{ secrets.SLACK_CHANNEL }}
