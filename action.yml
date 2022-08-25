@@ -1,5 +1,5 @@
-name: "Changelog to Slack Formatter"
-description: "Receive a `git log` log between two tags and format as a message to slack, with hyperlinks, to Jira and Github PRs"
+name: "Changelog to Slack"
+description: "Receive a `git log` log between two tags and send a message to slack, with hyperlinks, to Jira and Github PRs"
 author: rsmartins78
 branding:  
   icon: align-justify
@@ -20,13 +20,15 @@ inputs:
     default: https://github.com
   slackBotToken:
     description: Slack Bot Token, required to send messages using WebClient, read more in https://api.slack.com/authentication/token-types#bot
-    required: true
+    required: false
+    default: "none"
   slackChannel:
     description: Slack Channel to send a message, it can be a channel like '#channel-name' or a user like '@username'
-    required: true
+    required: false
+    default: "none"
 outputs:
   formattedChangelog:
-    description: "Formatted message, ready to send to Slack"
+    description: "Formatted message, if you prefer to use another action to send the message"
 runs:
   using: "node16"
   main: "dist/index.js"
