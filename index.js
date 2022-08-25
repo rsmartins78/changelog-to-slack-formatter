@@ -62,6 +62,7 @@ async function run() {
       ],
     };
     const sendMessage = await slack.chat.postMessage({
+      text: "A tag was released/deployed",
       blocks: slackMessage,
       channel: slackChannel,
     });
