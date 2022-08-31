@@ -3,9 +3,9 @@ This action doesn't generate the log between two tags, just format the message (
 
 ## Inputs
 
-### \*`changeLogInput`
+### \*`changeLogFile`
 
-Text you want to format, it is usually a result from another command, like `git log`.
+Path/Name of the text file containing the changelog. It is usually a result from another command, like `git log` (see the example below).
 
 ### \*`jiraTicketPattern`
 
@@ -60,12 +60,7 @@ changelog:
         old_version: "1.0.0"
         new_version: "1.2.0"
       run:
-        ## Workarround to generate a multiline shell variable in Github Actions
-        GITLOG=$(git log ${{ env.old_version }}..${{ env.new_version }} --oneline | cut -f 2- -d ' ')
-        echo "GITLOG<<EOF" >> $GITHUB_ENV
-        echo "*Changes:*" >> $GITHUB_ENV
-        echo "$GITLOG" >> $GITHUB_ENV
-        echo "EOF" >> $GITHUB_ENV
+        git log ${{ env.old_version }}..${{ env.new_version }} --oneline | cut -f 2- -d ' ' > changelog.txt
         if [[ ! -z $GITLOG ]]; then echo "::set-output name=log::true"; fi
         ## you can use this output to validate if the changelog was generated before following with the workflow
 
@@ -89,7 +84,7 @@ changelog:
       id: changelog
       if: steps.gitlog.outputs.log == 'true' ## optional
       with:
-        changeLogInput: ${{ env.GITLOG }}
+        changeLogFile: changelog.txt
         jiraTicketPattern: 'PROJ-\d+'
         jiraURL: "https://jira.company.com"
         slackBotToken: ${{ secrets.SLACK_BOT_TOKEN }}

@@ -1,14 +1,14 @@
 const core = require("@actions/core");
 
 const format = async function ({
-  changeLogInput,
+  changeLogText,
   jiraTicketPattern,
   prNumberPattern,
   jiraURL,
   fullRepoURL,
 }) {
   // Transforming changelog input into an array
-  const changeLog = changeLogInput.split("\n");
+  const changeLog = changeLogText.split("\n");
   let changeLogFormattedArr = [];
   changeLog.forEach((change) => {
     let line = change;

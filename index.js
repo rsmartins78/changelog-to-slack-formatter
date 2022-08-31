@@ -1,3 +1,4 @@
+const fs = require("fs/promises");
 const core = require("@actions/core");
 const { context } = require("@actions/github");
 
@@ -10,7 +11,7 @@ async function run() {
     const workflowName = process.env.GITHUB_WORKFLOW;
     const githubSHA = process.env.GITHUB_SHA;
     // Fetching action inputs
-    const changeLogInput = core.getInput("changeLogInput", { required: true });
+    const changeLogFile = core.getInput("changeLogFile", { required: true });
     const jiraTicketPattern = core.getInput("jiraTicketPattern", {
       required: true,
     });
@@ -33,8 +34,11 @@ async function run() {
     const fullRepoURL = `${githubServer}/${currentOwner}/${currentRepo}`;
     const actionLink = `${fullRepoURL}/commit/${githubSHA}/checks`;
 
+    const changeLogText = await fs.readFile(changeLogFile, {
+      encoding: "utf8",
+    });
     const { changeLogFormatted, changeLogFormattedArr } = await format({
-      changeLogInput: changeLogInput,
+      changeLogText: changeLogText,
       fullRepoURL: fullRepoURL,
       jiraURL: jiraURL,
       jiraTicketPattern: jiraTicketPattern,
