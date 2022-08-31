@@ -5,8 +5,8 @@ branding:
   icon: align-justify
   color: white
 inputs:
-  changeLogInput:
-    description: Git log you want to format
+  changeLogFile:
+    description: path/name of the text file containing the changelog
     required: true
   jiraTicketPattern:
     description: RegExp to find the Jira Ticket in the commit messages. E.g. 'PROJ-\d+'
