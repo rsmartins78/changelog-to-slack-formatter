@@ -49,7 +49,7 @@ jobs:
         PROJ-2178 add tooltip and fix dropdown bug (#2122)
         PROJ-2645 create trades review page (#2102)
         PROJ-2674 Sending changelog between versions to slack (#2144)" > changelog.txt
-    - uses: rsmartins78/changelog-to-slack-formatter@changelog-as-file
+    - uses: rsmartins78/changelog-to-slack-formatter@main
       with:
         changeLogFile: changelog.txt
         jiraTicketPattern: 'PROJ-\d+'
