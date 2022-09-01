@@ -37,6 +37,9 @@ async function run() {
     const changeLogText = await fs.readFile(changeLogFile, {
       encoding: "utf8",
     });
+
+    core.info(changeLogText);
+
     const { changeLogFormatted, changeLogFormattedArr } = await format({
       changeLogText: changeLogText,
       fullRepoURL: fullRepoURL,
