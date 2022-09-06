@@ -1,4 +1,5 @@
 const core = require("@actions/core");
+const util = require("util");
 const { WebClient } = require("@slack/web-api");
 
 Object.defineProperty(String.prototype, "capitalize", {
@@ -90,13 +91,17 @@ const send = async function ({
     }
   });
   /* End of workaround */
-  core.debug(`BlockKit Definition: ${blocks}`);
+  core.debug(
+    `BlockKit Definition: ${util.inspect(blocks, { maxArrayLength: null })}`
+  );
   const sendMessage = await slack.chat.postMessage({
     text: "A new tag was released/deployed...",
     blocks: blocks,
     channel: channel,
   });
-  core.debug(`Slack API Response ${sendMessage}`);
+  core.debug(
+    `Slack API Response ${util.inspect(sendMessage, { maxArrayLength: null })}`
+  );
   core.info(`Successfully send message to ${channel}`);
   return sendMessage;
 };
