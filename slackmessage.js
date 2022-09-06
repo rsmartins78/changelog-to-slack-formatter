@@ -22,6 +22,9 @@ const send = async function ({
   const slack = new WebClient(token);
   const blocks = [
     {
+      type: "divider",
+    },
+    {
       type: "section",
       text: {
         type: "mrkdwn",
