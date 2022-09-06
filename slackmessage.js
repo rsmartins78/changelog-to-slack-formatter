@@ -38,7 +38,6 @@ const send = async function ({
       },
     },
   ];
-
   /* 
       Terrible workaround to deal with Slack API limitations 
       Every 10 lines per message block, to avoind 3k characters limitation
@@ -91,13 +90,13 @@ const send = async function ({
     }
   });
   /* End of workaround */
-
+  core.debug(`BlockKit Definition: ${blocks}`);
   const sendMessage = await slack.chat.postMessage({
     text: "A new tag was released/deployed...",
     blocks: blocks,
     channel: channel,
   });
-  core.debug(sendMessage);
+  core.debug(`Slack API Response ${sendMessage}`);
   core.info(`Successfully send message to ${channel}`);
   return sendMessage;
 };

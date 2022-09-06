@@ -31,7 +31,8 @@ const format = async function ({
   });
   // Converting array to string
   let changeLogFormatted = changeLogFormattedArr.join("\n");
-  core.debug(changeLogFormatted);
+  core.debug(`Changelog Formatted: ${changeLogFormatted}`);
+  core.debug(`Changelog Array: ${changeLogFormattedArr}`);
   return { changeLogFormatted, changeLogFormattedArr };
 };
 
