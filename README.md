@@ -61,7 +61,7 @@ changelog:
         new_version: "1.2.0"
       run:
         git log ${{ env.old_version }}..${{ env.new_version }} --oneline | cut -f 2- -d ' ' > changelog.txt
-        if [[ ! -z $GITLOG ]]; then echo "::set-output name=log::true"; fi
+        if [[ ! -z $GITLOG ]]; then echo "log=true" >> $GITHUB_OUTPUT; fi
         ## you can use this output to validate if the changelog was generated before following with the workflow
 
         ##########################################################
