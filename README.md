@@ -41,6 +41,10 @@ If set, will be used on the slack message to show the old version running on the
 
 If set, it will send in the message a subtitle. (Requires `slackBotToken` and `slackChannel`)
 
+### `environment`
+
+If set, it will include the value on the message, right after `Changelog` text. (Requires `slackBotToken` and `slackChannel`)
+
 ## Outputs
 
 ### `formattedChangelog`

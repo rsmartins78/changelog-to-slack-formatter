@@ -18,6 +18,7 @@ const send = async function ({
   oldVersion,
   newVersion,
   customSubTitle,
+  environment,
 }) {
   const slack = new WebClient(token);
   const blocks = [
@@ -38,7 +39,9 @@ const send = async function ({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `*Changelog*`,
+        text: `*Changelog ${
+          environment !== "none" ? " - " + environment.capitalize() : ""
+        }*`,
       },
     },
   ];

@@ -23,6 +23,7 @@ async function run() {
     const oldVersion = core.getInput("oldVersion", { required: false });
     const newVersion = core.getInput("newVersion", { required: false });
     const customSubTitle = core.getInput("customSubTitle", { required: false });
+    const environment = core.getInput("environment", { required: false });
 
     // Removing ending slash
     jiraURL.endsWith("/") ? (jiraURL = jiraURL.slice(0, -1)) : jiraURL;
@@ -57,6 +58,7 @@ async function run() {
         oldVersion: oldVersion,
         newVersion: newVersion,
         customSubTitle: customSubTitle,
+        environment: environment,
       });
     }
     core.info("Finish");

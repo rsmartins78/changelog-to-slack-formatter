@@ -38,6 +38,10 @@ inputs:
     description: Custom subtitle for the message, can be used say for example the environment that is receiving this update.
     required: false
     default: "none"
+  environment:
+    description: Custom subtitle for the message, can be used say for example the environment that is receiving this update.
+    required: false
+    default: "none"
 outputs:
   formattedChangelog:
     description: "Formatted message, if you prefer to use another action to send the message"
