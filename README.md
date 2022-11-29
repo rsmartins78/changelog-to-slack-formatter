@@ -84,7 +84,7 @@ changelog:
         # PROJ-2645 create trades review page (#2102)
         # PROJ-2674 Sending changelog between versions to slack (#2144)
 
-    - uses: rsmartins78/changelog-to-slack-formatter@v2
+    - uses: rsmartins78/changelog-to-slack-formatter@v3
       id: changelog
       if: steps.gitlog.outputs.log == 'true' ## optional
       with:
@@ -96,4 +96,5 @@ changelog:
         oldVersion: "1.0.0"
         newVersion: "1.2.0"
         customSubTitle: "Backend Changes"
+        environment: staging
 ```
