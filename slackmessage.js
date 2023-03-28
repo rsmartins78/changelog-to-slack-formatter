@@ -45,12 +45,6 @@ const send = async function ({
       },
     },
   ];
-  /* 
-      Terrible workaround to deal with Slack API limitations 
-      Every 10 lines per message block, to avoind 3k characters limitation
-    */
-  let count = 0;
-  let tempText;
 
   if (customSubTitle !== "none") {
     let subTitle = {
@@ -73,33 +67,20 @@ const send = async function ({
     };
     blocks.push(versions);
   }
-
+  let tempText;
   await messageArr.forEach((change) => {
-    if (count < 7) {
-      if (tempText === undefined) {
-        tempText = change;
-      } else {
-        tempText = tempText + "\n" + change;
-      }
-      count++;
-    } else if (count == 7) {
-      tempText = tempText + "\n" + change;
-      let tempTextObj = {
-        type: "section",
-        text: { type: "mrkdwn", text: tempText },
-      };
-      blocks.push(tempTextObj);
-      tempText = "";
-      count = 0;
-    } else {
-      tempText = "";
-      count = 0;
-    }
+    tempText = `${tempText || ""}\n${change}`;
   });
-  /* End of workaround */
+  let tempTextObj = {
+    type: "section",
+    text: { type: "mrkdwn", text: tempText },
+  };
+  blocks.push(tempTextObj);
+
   core.debug(
     `BlockKit Definition: ${util.inspect(blocks, { maxArrayLength: null })}`
   );
+
   const sendMessage = await slack.chat.postMessage({
     text: "A new tag was released/deployed...",
     blocks: blocks,
