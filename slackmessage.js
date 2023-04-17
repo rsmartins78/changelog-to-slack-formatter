@@ -17,6 +17,7 @@ const send = async function ({
   workflowName,
   oldVersion,
   newVersion,
+  customTitle,
   customSubTitle,
   environment,
 }) {
@@ -29,7 +30,11 @@ const send = async function ({
       type: "section",
       text: {
         type: "mrkdwn",
-        text: `:tada::tada: *<${actionLink}|${workflowName.capitalize()}>* | A new tag was released/deployed :tada::tada:`,
+        text: `:tada::tada: *<${actionLink}|${workflowName.capitalize()}>* | ${
+          customTitle !== "none"
+            ? customTitle.capitalize() + " :tada::tada:"
+            : "A new tag was released/deployed :tada::tada:"
+        }`,
       },
     },
     {
@@ -82,7 +87,11 @@ const send = async function ({
   );
 
   const sendMessage = await slack.chat.postMessage({
-    text: "A new tag was released/deployed...",
+    text: `${
+      customTitle !== "none"
+        ? customTitle.capitalize() + " :tada::tada:"
+        : "A new tag was released/deployed :tada::tada:"
+    }`,
     blocks: blocks,
     channel: channel,
   });

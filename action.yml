@@ -34,6 +34,10 @@ inputs:
     description: Slack Channel to send a message, it can be a channel like '#channel-name' or a user like '@username'
     required: false
     default: "none"
+  customTitle:
+    description: Custom title for the message, used to define a custom header for the message and slack notifications.
+    required: false
+    default: "none"
   customSubTitle:
     description: Custom subtitle for the message, can be used say for example the environment that is receiving this update.
     required: false

@@ -22,6 +22,7 @@ async function run() {
     const slackChannel = core.getInput("slackChannel", { required: false });
     const oldVersion = core.getInput("oldVersion", { required: false });
     const newVersion = core.getInput("newVersion", { required: false });
+    const customTitle = core.getInput("customTitle", { required: false });
     const customSubTitle = core.getInput("customSubTitle", { required: false });
     const environment = core.getInput("environment", { required: false });
 
@@ -57,6 +58,7 @@ async function run() {
         workflowName: workflowName,
         oldVersion: oldVersion,
         newVersion: newVersion,
+        customTitle: customTitle,
         customSubTitle: customSubTitle,
         environment: environment,
       });

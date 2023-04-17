@@ -37,9 +37,13 @@ If set, will be used on the slack message to show the old version running on the
 
 If set, will be used on the slack message to show the old version running on the environment. (Requires `slackBotToken` and `slackChannel`)
 
+### `customTitle`
+
+If set, it will send a title in the message to slack. (Requires `slackBotToken` and `slackChannel`)
+
 ### `customSubTitles`
 
-If set, it will send in the message a subtitle. (Requires `slackBotToken` and `slackChannel`)
+If set, it will send a subtitle in the message to slack. (Requires `slackBotToken` and `slackChannel`)
 
 ### `environment`
 
@@ -95,6 +99,7 @@ changelog:
         slackChannel: ${{ secrets.SLACK_CHANNEL }}
         oldVersion: "1.0.0"
         newVersion: "1.2.0"
+        customTitle: "New Version Released"
         customSubTitle: "Backend Changes"
         environment: staging
 ```
