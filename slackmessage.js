@@ -72,15 +72,24 @@ const send = async function ({
     };
     blocks.push(versions);
   }
-  let tempText;
-  await messageArr.forEach((change) => {
-    tempText = `${tempText || ""}\n${change}`;
-  });
-  let tempTextObj = {
-    type: "section",
-    text: { type: "mrkdwn", text: tempText },
-  };
-  blocks.push(tempTextObj);
+  let messageText = messageArr.join("\r\n");
+  const maxLength = 3000;
+  if (messageText.length > maxLength) {
+    const chunks = messageText.match(new RegExp(`.{1,${maxLength}}`, "g"));
+    chunks.forEach((chunk) => {
+      const tempTextObj = {
+        type: "section",
+        text: { type: "mrkdwn", text: chunk },
+      };
+      blocks.push(tempTextObj);
+    });
+  } else {
+    const tempTextObj = {
+      type: "section",
+      text: { type: "mrkdwn", text: messageText },
+    };
+    blocks.push(tempTextObj);
+  }
 
   core.debug(
     `BlockKit Definition: ${util.inspect(blocks, { maxArrayLength: null })}`
